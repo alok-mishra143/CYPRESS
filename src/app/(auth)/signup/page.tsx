@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 "use client";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,7 +16,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, Suspense } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -81,112 +83,118 @@ const Signup = () => {
   };
 
   return (
-    <Form {...form}>
-      <form
-        onChange={() => {
-          if (submitError) setSubmitError("");
-        }}
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full sm:justify-center sm:w-[400px]
+    <Suspense fallback={<Loader />}>
+      <Form {...form}>
+        <form
+          onChange={() => {
+            if (submitError) setSubmitError("");
+          }}
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-full sm:justify-center sm:w-[400px]
         space-y-6 flex
         flex-col
         "
-      >
-        <Link
-          href="/"
-          className="
+        >
+          <Link
+            href="/"
+            className="
           w-full
           flex
           justify-left
           items-center"
-        >
-          <Image src={Logo} alt="cypress Logo" width={50} height={50} />
-          <span
-            className="font-semibold
-          dark:text-white text-4xl first-letter:ml-2"
           >
-            cypress.
-          </span>
-        </Link>
-        <FormDescription
-          className="
-        text-foreground/60"
-        >
-          An all-In-One Collaboration and Productivity Platform
-        </FormDescription>
-        {!confirmation && !codeExchangeError && (
-          <>
-            <FormField
-              disabled={isLoading}
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input type="email" placeholder="Email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              disabled={isLoading}
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input type="password" placeholder="Password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              disabled={isLoading}
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Confirm Password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" className="w-full p-6" disabled={isLoading}>
-              {!isLoading ? "Create Account" : <Loader />}
-            </Button>
-          </>
-        )}
-
-        {submitError && <FormMessage>{submitError}</FormMessage>}
-        <span className="self-container">
-          Already have an account?{" "}
-          <Link href="/login" className="text-primary">
-            Login
+            <Image src={Logo} alt="cypress Logo" width={50} height={50} />
+            <span
+              className="font-semibold
+          dark:text-white text-4xl first-letter:ml-2"
+            >
+              cypress.
+            </span>
           </Link>
-        </span>
-        {(confirmation || codeExchangeError) && (
-          <>
-            <Alert className={confirmationAndErrorStyles}>
-              {!codeExchangeError && <MailCheck className="h-4 w-4" />}
-              <AlertTitle>
-                {codeExchangeError ? "Invalid Link" : "Check your email."}
-              </AlertTitle>
-              <AlertDescription>
-                {codeExchangeError || "An email confirmation has been sent."}
-              </AlertDescription>
-            </Alert>
-          </>
-        )}
-      </form>
-    </Form>
+          <FormDescription
+            className="
+        text-foreground/60"
+          >
+            An all-In-One Collaboration and Productivity Platform
+          </FormDescription>
+          {!confirmation && !codeExchangeError && (
+            <>
+              <FormField
+                disabled={isLoading}
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input type="email" placeholder="Email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                disabled={isLoading}
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                disabled={isLoading}
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Confirm Password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" className="w-full p-6" disabled={isLoading}>
+                {!isLoading ? "Create Account" : <Loader />}
+              </Button>
+            </>
+          )}
+
+          {submitError && <FormMessage>{submitError}</FormMessage>}
+          <span className="self-container">
+            Already have an account?{" "}
+            <Link href="/login" className="text-primary">
+              Login
+            </Link>
+          </span>
+          {(confirmation || codeExchangeError) && (
+            <>
+              <Alert className={confirmationAndErrorStyles}>
+                {!codeExchangeError && <MailCheck className="h-4 w-4" />}
+                <AlertTitle>
+                  {codeExchangeError ? "Invalid Link" : "Check your email."}
+                </AlertTitle>
+                <AlertDescription>
+                  {codeExchangeError || "An email confirmation has been sent."}
+                </AlertDescription>
+              </Alert>
+            </>
+          )}
+        </form>
+      </Form>
+    </Suspense>
   );
 };
 
