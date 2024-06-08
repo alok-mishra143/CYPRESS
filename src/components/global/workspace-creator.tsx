@@ -1,13 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useToast } from "../ui/use-toast";
-import { useRouter } from "next/navigation";
-import { User, workspace } from "@/lib/supabase/supabase.types";
+
+import { Subscription, User, workspace } from "@/lib/supabase/supabase.types";
 import { v4 } from "uuid";
 import { useSupabaseUser } from "@/lib/provider/supabase-userProvider";
-import { createWorkspace } from "@/lib/supabase/queries";
-import { Button } from "../ui/button";
+import {
+  addCollaborators,
+  createWorkspace,
+  getUserSubscriptionStatus,
+} from "@/lib/supabase/queries";
+
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import {
@@ -20,16 +24,21 @@ import {
 } from "../ui/select";
 import { ScrollArea } from "../ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Lock, Plus, Share } from "lucide-react";
+import { Button } from "../ui/button";
+import CollaboratorSearch from "./colloborator-search";
+import { useRouter } from "next/navigation";
 
 const WorkspaceCreator = () => {
-  const { user } = useSupabaseUser();
-
   const { toast } = useToast();
+  const { user } = useSupabaseUser();
   const router = useRouter();
   const [permissions, setPermissions] = useState("private");
   const [title, setTitle] = useState("");
   const [collaborators, setCollaborators] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [subscription, setSubscription] = useState<Subscription | null>(null);
 
   const addCollaborator = (user: User) => {
     setCollaborators([...collaborators, user]);
@@ -62,10 +71,11 @@ const WorkspaceCreator = () => {
       if (permissions === "shared") {
         toast({ title: "Success", description: "Created the workspace" });
         await createWorkspace(newWorkspace);
-        // await addCollaborator(collaborators, uuid);
+        await addCollaborators(collaborators, uuid);
         router.refresh();
       }
     }
+
     setIsLoading(false);
   };
 
@@ -120,7 +130,7 @@ const WorkspaceCreator = () => {
               items-center
             "
                 >
-                  {/* <Lock /> */}
+                  <Lock />
                   <article className="text-left flex flex-col">
                     <span>Private</span>
                     <p>
@@ -132,7 +142,7 @@ const WorkspaceCreator = () => {
               </SelectItem>
               <SelectItem value="shared">
                 <div className="p-2 flex gap-4 justify-center items-center">
-                  {/* <Share></Share> */}
+                  <Share></Share>
                   <article className="text-left flex flex-col">
                     <span>Shared</span>
                     <span>You can invite collaborators.</span>
@@ -145,7 +155,7 @@ const WorkspaceCreator = () => {
       </>
       {permissions === "shared" && (
         <div>
-          {/* <CollaboratorSearch
+          <CollaboratorSearch
             existingCollaborators={collaborators}
             getCollaborator={(user) => {
               addCollaborator(user);
@@ -155,7 +165,7 @@ const WorkspaceCreator = () => {
               <Plus />
               Add Collaborators
             </Button>
-          </CollaboratorSearch> */}
+          </CollaboratorSearch>
           <div className="mt-4">
             <span className="text-sm text-muted-foreground">
               Collaborators {collaborators.length || ""}

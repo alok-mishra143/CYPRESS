@@ -11,6 +11,11 @@ import React from "react";
 import { twMerge } from "tailwind-merge";
 import { ScrollArea } from "../ui/scroll-area";
 import WorkspaceDropdown from "./Workspace-Dropdown";
+import PlanUsage from "./plan-usage";
+import NativeNavigation from "./native-navigation";
+import FoldersDropdownList from "./folders-dropdown-list";
+import UserCard from "./user-card";
+// import FoldersDropdownList from "./folders-dropdown-list";
 
 interface SidebarProps {
   params: { workspaceId: string };
@@ -49,7 +54,7 @@ const Sidebar = async ({ params, className }: SidebarProps) => {
   return (
     <aside
       className={twMerge(
-        "hidden sm:flex sm:flex-col w-[280px] shrink-0 p-4 md:gap-4 !justify-between",
+        "hidden sm:flex sm:flex-col w-[280px] shrink-0 p-4 md:gap-4 !justify-between  overflow-scroll",
         className
       )}
     >
@@ -64,14 +69,11 @@ const Sidebar = async ({ params, className }: SidebarProps) => {
             ...sharedWorkspaces,
           ].find((workspace) => workspace.id === params.workspaceId)}
         />
-        {/* <PlanUsage
-          foldersLength={workspaceFolderData?.length || 0}
-          subscription={subscriptionData}
-        /> */}
-        {/* <NativeNavigation myWorkspaceId={params.workspaceId} /> */}
+
+        <NativeNavigation myWorkspaceId={params.workspaceId} />
         <ScrollArea
           className="overflow-scroll relative
-      h-[450px]
+      h-[550px] 
     "
         >
           <div
@@ -85,13 +87,13 @@ const Sidebar = async ({ params, className }: SidebarProps) => {
       to-transparent 
       z-40"
           />
-          {/* <FoldersDropdownList
+          <FoldersDropdownList
             workspaceFolders={workspaceFolderData || []}
             workspaceId={params.workspaceId}
-          /> */}
+          />
         </ScrollArea>
       </div>
-      {/* <UserCard subscription={subscriptionData} /> */}
+      <UserCard subscription={subscriptionData} />
     </aside>
   );
 };

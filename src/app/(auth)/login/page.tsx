@@ -36,8 +36,10 @@ const Page = () => {
     formData
   ) => {
     const { error } = await actionLoginUser(formData);
+    console.log(formData);
 
     if (error) {
+      console.log("the login error ");
       form.reset();
       setSubmitError(error.message);
     }

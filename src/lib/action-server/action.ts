@@ -3,8 +3,8 @@
 import { z } from "zod";
 
 import { FormSchema } from "../types";
-import { cookies } from "next/headers";
 import { createClient } from "../supabase/server";
+import { getUserSubscriptionStatus } from "../supabase/queries";
 
 export async function actionLoginUser({
   email,
@@ -37,4 +37,31 @@ export async function actionSignUpUser({
     },
   });
   return response;
+}
+
+export async function getuser() {
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase.auth.getUser();
+
+    if (error) {
+      throw error;
+    }
+
+    if (!data || !data.user) {
+      throw new Error("User data not found");
+    }
+
+    const { data: subscriptionData, error: subscriptionError } =
+      await getUserSubscriptionStatus(data.user.id);
+
+    if (subscriptionError) {
+      throw subscriptionError;
+    }
+
+    return { data, subscriptionData };
+  } catch (error) {
+    // Return the error and any available data
+    throw error;
+  }
 }

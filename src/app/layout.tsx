@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import db from "@/lib/supabase/db";
+
 import { ThemeProvider } from "@/lib/provider/next-theme-provider";
 import AppStateProvider from "@/lib/provider/state-provider";
+import {
+  SupabaseUserProvider,
+  useSupabaseUser,
+} from "@/lib/provider/supabase-userProvider";
+import { SocketProvider } from "@/lib/provider/socket-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +27,20 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {" "}
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <AppStateProvider>{children}</AppStateProvider>
-        </ThemeProvider>
+        <AppStateProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            forcedTheme="dark"
+          >
+            <SupabaseUserProvider>
+              <SocketProvider>
+                {children}
+                <Toaster />
+              </SocketProvider>
+            </SupabaseUserProvider>
+          </ThemeProvider>
+        </AppStateProvider>
       </body>
     </html>
   );

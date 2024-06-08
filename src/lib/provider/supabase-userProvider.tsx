@@ -5,7 +5,7 @@ import { Subscription } from "../supabase/supabase.types";
 import { createContext, useContext, useEffect, useState } from "react";
 import { getUserSubscriptionStatus } from "../supabase/queries";
 import { useToast } from "@/components/ui/use-toast";
-import { createClient } from "../supabase/client";
+import { getuser } from "../action-server/action";
 
 type SupabaseUserContextType = {
   user: AuthUser | null;
@@ -32,16 +32,14 @@ export const SupabaseUserProvider: React.FC<SupabaseUserProviderProps> = ({
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const { toast } = useToast();
 
-  const supabase = createClient();
-
   //Fetch the user details
   //subscrip
   useEffect(() => {
-    console.log("fetching user");
     const getUser = async () => {
       const {
         data: { user },
-      } = await supabase.auth.getUser();
+      } = await getuser();
+
       if (user) {
         console.log(user);
         setUser(user);
@@ -57,7 +55,7 @@ export const SupabaseUserProvider: React.FC<SupabaseUserProviderProps> = ({
       }
     };
     getUser();
-  }, [supabase, toast]);
+  }, [toast]);
   return (
     <SupabaseUserContext.Provider value={{ user, subscription }}>
       {children}
