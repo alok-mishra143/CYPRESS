@@ -3,8 +3,8 @@
 import { z } from "zod";
 
 import { FormSchema } from "../types";
-import { createClient } from "../supabase/server";
 import { getUserSubscriptionStatus } from "../supabase/queries";
+import { createClient } from "../supabase/server";
 
 export async function actionLoginUser({
   email,
@@ -22,6 +22,8 @@ export async function actionSignUpUser({
   email,
   password,
 }: z.infer<typeof FormSchema>) {
+  console.log("email in actionsignup", email);
+  console.log("password in actionsignup", password);
   const supabase = createClient();
   const { data } = await supabase
     .from("profiles")
@@ -36,6 +38,7 @@ export async function actionSignUpUser({
       emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}api/auth/callback`,
     },
   });
+  console.log("response", response);
   return response;
 }
 

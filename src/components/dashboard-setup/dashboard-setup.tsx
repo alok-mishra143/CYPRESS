@@ -21,16 +21,16 @@ import { toast } from "../ui/use-toast";
 import { createClient } from "@/lib/supabase/client";
 import { v4 } from "uuid";
 import { createWorkspace } from "@/lib/supabase/queries";
-import router from "next/router";
 import { useAppState } from "@/lib/provider/state-provider";
 import Loader from "../global/Loader";
-
+import { useRouter } from "next/navigation";
 interface DashboardSetupProps {
   user: AuthUser;
   subscription: Subscription | null;
 }
 
 const DashboardSetup = ({ subscription, user }: DashboardSetupProps) => {
+  const router = useRouter();
   const { dispatch } = useAppState();
   const supabase = createClient();
   const [selectedEmoji, setSelectedEmoji] = useState("💼");
@@ -54,7 +54,7 @@ const DashboardSetup = ({ subscription, user }: DashboardSetupProps) => {
     const file = value.logo?.[0];
     let filePath = null;
     const workspaceUUID = v4();
-    console.log("the dash board"+file);
+    console.log("the dash board" + file);
 
     if (file) {
       try {
