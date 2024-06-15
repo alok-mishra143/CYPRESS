@@ -178,7 +178,7 @@ const DashboardSetup = ({ subscription, user }: DashboardSetupProps) => {
                 type="file"
                 accept="image/*"
                 placeholder="Workspace Name"
-                // disabled={isLoading || subscription?.status !== "active"}
+                disabled={isLoading}
                 {...register("logo", {
                   required: false,
                 })}

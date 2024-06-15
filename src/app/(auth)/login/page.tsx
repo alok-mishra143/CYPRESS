@@ -20,10 +20,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Loader from "@/components/global/Loader";
 import { actionLoginUser } from "@/lib/action-server/action";
+import StrengthPass from "@/components/custompassword/StrengthPass";
 
 const Page = () => {
   const router = useRouter();
   const [submitError, setSubmitError] = useState(" ");
+  const [passwordtest, setpasswordtest] = useState(0);
   const form = useForm<z.infer<typeof FormSchema>>({
     mode: "onChange",
     resolver: zodResolver(FormSchema),
@@ -103,6 +105,8 @@ const Page = () => {
             </FormItem>
           )}
         />
+        <StrengthPass password={form.getValues("password")} />
+
         {submitError && <FormMessage>{submitError}</FormMessage>}
         <Button
           type="submit"

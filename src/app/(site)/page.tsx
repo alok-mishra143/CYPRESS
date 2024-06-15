@@ -3,12 +3,15 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React from "react";
 
-import Banner from "../../../public/appBanner.png";
+import Banner from "../../../public/home.png";
 import Calendar from "../../../public/cal.png";
-import Diamond from "../../../public/icons/diamond.svg";
-import Check from "../../../public/icons/check.svg";
 
-import { CLIENTS, PRICING_CARDS, PRICING_PLANS, USERS } from "@/lib/constants";
+import {
+  CLIENTS,
+  PRICING_CARDS,
+  PRICING_PLANS,
+  reviews,
+} from "@/lib/constants";
 import { randomUUID } from "crypto";
 import CustomCard from "@/components/landing-page/CustomCard";
 import { twMerge } from "tailwind-merge";
@@ -16,185 +19,110 @@ import clsx from "clsx";
 
 import { CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { TracingBeam } from "@/components/accUi/tracing-beam";
+import Link from "next/link";
+import Marquee from "@/components/accUi/marquee";
+import { ReviewCard } from "@/components/accUi/reviewcard";
+import ShineBorder from "@/components/accUi/shineBorder";
+import Footer from "@/components/accUi/footer";
+
 const Home = () => {
+  const firstRow = reviews.slice(0, reviews.length / 2);
+  const secondRow = reviews.slice(reviews.length / 2);
   return (
     <>
-      <section className="gap-4 px-4 mt-10 overflow-hidden sm:px-6 sm:flex sm:flex-col md:justify-center md:items-center">
-        <TitleSection
-          pill="✨ Your Workspace, Perfected"
-          title="All-In-One Collaboration and Productivity Platform"
-        />
+      <TracingBeam className="px-8">
+        <section className="gap-4 px-4 mt-10 overflow-hidden sm:px-6 sm:flex sm:flex-col md:justify-center md:items-center -z-1 w-full">
+          <div className="mt-24">
+            <TitleSection
+              pill="✨ Your Workspace, Perfected"
+              title="All-In-One Collaboration and Productivity Platform"
+            />
+          </div>
 
-        <div className="bg-white p-[2px] mt-6 rounded-xl bg-gradient-to-r from-primary to-brand-primaryBlue sm:w-[300px]">
-          <Button
-            //@ts-ignore
-            variant="btn-secondary"
-            className="w-full rounded-[10px] p-6 text-2xl bg-background"
-          >
-            Get Cypress Free
-          </Button>
-        </div>
+          <Link href="/signup">
+            <Button className="inline-flex h-12 animate-shimmer items-center justify-center rounded-3xl border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 cursor-pointer mb-14">
+              Get Cypress Free
+            </Button>
+          </Link>
 
-        <div className="md:mt-[-90px] sm:w-full w-[750px] flex justify-center items-center mt-[-40px] relative sm:ml-0 ml-[-50px]">
-          <Image src={Banner} alt="Application Banner" />
-          <div className="bottom-0 top-[50%] bg-gradient-to-t dark:from-background left-0 right-0 absolute z-10"></div>
-        </div>
-      </section>
+          <div className="md:mt-[-40px] sm:w-full max-w-[750px] flex justify-center items-center mt-[-40px] relative sm:ml-0 ml-[-10px] -z-1 ">
+            <ShineBorder className="" color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}>
+              <Image src={Banner} alt="Application Banner" className="-z-1 " />
+            </ShineBorder>
+            <div className="bottom-0 top-[50%] bg-gradient-to-t dark:from-background left-0 right-0 absolute z-1"></div>
+          </div>
+        </section>
 
-      <section className="relative">
-        <div className="overflow-hidden flex after:content[''] after:dark:from-brand-dark after:to-transparent after:from-background after:bg-gradient-to-l after:right-0 after:bottom-0 after:top-0 after:w-20 after:z-10 after:absolute before:content[''] before:dark:from-brand-dark before:to-transparent before:from-background before:bg-gradient-to-r before:left-0 before:top-0 before:bottom-0 before:w-20 before:absolute before:z-10">
-          {[...Array(2)].map((arr) => (
-            <div key={randomUUID()} className="flex flex-nowrap animate-slide">
-              {CLIENTS.map((client) => (
-                <div
-                  key={client.alt}
-                  className="relative w-[200px] m-20 shrink-0 flex items-center"
-                >
-                  <Image
-                    src={client.logo}
-                    alt={client.alt}
-                    width={200}
-                    className="object-contain max-w-none"
-                  />
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </section>
-      <section className="px-4 sm:px-6 flex justify-center items-center flex-col">
-        <div className="w-[30%] blur-[120px] rounded-full h-32 absolute bg-brand-primaryPurple/50 -z-10 top-22" />
-        <TitleSection
-          title="Keep track of your meetings all in one place"
-          subheading="Capture your ideas, thoughts, and meeting notes in a structured and organized manner"
-          pill="Features"
-        />
-        <div className="mt-10 max-w-[450px] flex justify-center items-center relative sm:ml-0 rounded-2xl border-8 border-washed-purple-300 border-opacity-10">
-          <Image src={Calendar} alt="Banner" className="rounded-2xl" />
-        </div>
-      </section>
-
-      <section className="relative">
-        <div className="w-full blur-[120px] rounded-full h-32 absolute bg-brand-primaryPurple/50 -z-10 top-56" />
-        <div className="mt-20 px-4 sm:px-6 flex flex-col overflow-x-hidden overflow-visible">
+        <section className="relative">
+          <div className="overflow-hidden flex after:content[''] after:dark:from-brand-dark after:to-transparent after:from-background after:bg-gradient-to-l after:right-0 after:bottom-0 after:top-0 after:w-20 after:z-10 after:absolute before:content[''] before:dark:from-brand-dark before:to-transparent before:from-background before:bg-gradient-to-r before:left-0 before:top-0 before:bottom-0 before:w-20 before:absolute before:z-10 ">
+            {[...Array(2)].map((arr) => (
+              <div
+                key={randomUUID()}
+                className="flex flex-nowrap animate-slide"
+              >
+                {CLIENTS.map((client) => (
+                  <div
+                    key={client.alt}
+                    className="relative w-[200px] m-20 shrink-0 flex items-center"
+                  >
+                    <Image
+                      src={client.logo}
+                      alt={client.alt}
+                      width={200}
+                      className="object-contain max-w-none"
+                    />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </section>
+        <section className="px-4 sm:px-6 flex justify-center items-center flex-col">
+          <div className="w-[30%] blur-[120px] rounded-full h-32 absolute bg-brand-primaryPurple/50 -z-10 top-22" />
           <TitleSection
-            title="Trusted by All"
-            subheading="Join thousands of satisfied users who rely on our platform for their personal and professional productivity needs"
-            pill="Testimonials"
+            title="Keep track of your meetings all in one place"
+            subheading="Capture your ideas, thoughts, and meeting notes in a structured and organized manner"
+            pill="Features"
           />
+          <div className="mt-10 max-w-[450px] flex justify-center items-center relative sm:ml-0 rounded-2xl border-8 border-washed-purple-300 border-opacity-10">
+            <Image src={Calendar} alt="Banner" className="rounded-2xl" />
+          </div>
+        </section>
 
-          {[...Array(2)].map((arr, index) => (
-            <div
-              key={randomUUID()}
-              className={twMerge(
-                clsx("mt-10 flex flex-nowrap gap-6 self-start", {
-                  "flex-row-reverse": index === 1,
-                  "animate-[slide_250s_linear_infinite]": true,
-                  "animate-[slide_250s_linear_infinite_reverse]": index === 1,
-                  "ml-[100vw]": index === 1,
-                }),
-                "hover:paused"
-              )}
+        <section className="relative">
+          <div className="w-full blur-[120px] rounded-full h-32 absolute bg-brand-primaryPurple/20 -z-10 top-56" />
+          <div className="mt-20 px-4 sm:px-6 flex flex-col overflow-x-hidden overflow-visible">
+            <TitleSection
+              title="Trusted by All"
+              subheading="Join thousands of satisfied users who rely on our platform for their personal and professional productivity needs"
+              pill="Testimonials"
+            />
+
+            <Marquee
+              pauseOnHover
+              className="[--duration:30s]"
+              id="testimonials"
             >
-              {USERS.map((testimonial, index) => (
-                <CustomCard
-                  key={testimonial.name}
-                  className="w-[500px] shrink-0s rounded-xl dark:bg-gradient-to-t dark:from-border dark:to-background"
-                  cardHeader={
-                    <div className="flex items-center gap-4">
-                      <Avatar>
-                        <AvatarImage src={`/avatars/${index + 1}.png`} />
-                        <AvatarFallback>AV</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <CardTitle className="text-foreground">
-                          {testimonial.name}
-                        </CardTitle>
-                        <CardDescription className="dark:text-washed-purple-800">
-                          {testimonial.name.toLocaleLowerCase()}
-                        </CardDescription>
-                      </div>
-                    </div>
-                  }
-                  cardContent={
-                    <p className="dark:text-washed-purple-800">
-                      {testimonial.message}
-                    </p>
-                  }
-                ></CustomCard>
+              {firstRow.map((review) => (
+                <ReviewCard key={review.username} {...review} />
               ))}
-            </div>
-          ))}
-        </div>
-      </section>
+            </Marquee>
+            <Marquee reverse pauseOnHover className="[--duration:20s]">
+              {secondRow.map((review) => (
+                <ReviewCard key={review.username} {...review} />
+              ))}
+            </Marquee>
 
-      <section className="mt-20 px-4 sm:px-6 py-4">
-        <TitleSection
-          title="The Perfect Plan for You"
-          subheading="Experience all the benefits of our platform. Select a plan from the below"
-          pill="Pricing"
-        />
-        <div className="flex flex-col-reverse sm:flex-row gap-4 justify-center sm:items-stretch items-center mt-10">
-          {PRICING_CARDS.map((card) => (
-            <CustomCard
-              key={card.planType}
-              className={clsx(
-                "w-[300px] rounded-2xl dark:bg-black/40 background-blur-3xl relative",
-                {
-                  "border-brand-primaryPurple/70":
-                    card.planType === PRICING_PLANS.proplan,
-                }
-              )}
-              cardHeader={
-                <CardTitle className="text-2xl font-semibold">
-                  {card.planType === PRICING_PLANS.proplan && (
-                    <>
-                      <div className="hidden dark:block w-full blur-[120px] rounded-full h-32 absolute bg-brand-primaryPurple/80 -z-10 top-0" />
-                      <Image
-                        src={Diamond}
-                        alt="Pro Plan Icon"
-                        className="absolute top-6 right-6"
-                      />
-                    </>
-                  )}
-                  {card.planType}
-                </CardTitle>
-              }
-              cardFooter={
-                <ul className="font-normal flex mb-2 flex-col gap-4">
-                  <small>{card.highlightFeature}</small>
-                  {card.freatures.map((feature) => (
-                    <li key={feature} className="flex items-center gap-2">
-                      <Image src={Check} alt="Check Icon" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              }
-              cardContent={
-                <CardContent className="p-0">
-                  <span className="font-normal text-2xl">${card.price}</span>
-                  {+card.price > 0 ? (
-                    <span className="dark:text-washed-purple-800 ml-1">
-                      /mo
-                    </span>
-                  ) : (
-                    ""
-                  )}
-                  <p className="dark:text-washed-purple-800">
-                    {card.description}
-                  </p>
-                  <Button className="whitespace-nowrap w-full mt-4 hover:bg-violet-900">
-                    {card.planType === PRICING_PLANS.proplan
-                      ? "Go Pro"
-                      : "Get Started"}
-                  </Button>
-                </CardContent>
-              }
-            ></CustomCard>
-          ))}
-        </div>
-      </section>
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white dark:from-background"></div>
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-white dark:from-background"></div>
+          </div>
+        </section>
+
+        <section className="mt-20 px-4 sm:px-6 py-4">
+          <Footer />
+        </section>
+      </TracingBeam>
     </>
   );
 };

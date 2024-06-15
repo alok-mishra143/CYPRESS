@@ -1,5 +1,3 @@
-//@ts-nocheck
-
 "use client";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,7 +14,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, Suspense } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -44,7 +42,7 @@ const SignUpFormSchema = z
     path: ["confirmPassword"],
   });
 
-const Signup = () => {
+const Signup1 = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [submitError, setSubmitError] = useState("");
@@ -195,4 +193,10 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default function Signup() {
+  return (
+    <Suspense>
+      <Signup1 />
+    </Suspense>
+  );
+}

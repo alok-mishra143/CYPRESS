@@ -40,9 +40,7 @@ const PlanUsage: React.FC<PlanUsageProps> = ({
           items-center
         "
         >
-          <div className="h-4 w-4">
-            <CypressDiamondIcon />
-          </div>
+          <div className="h-4 w-4"></div>
           <div
             className="flex 
         justify-between 
@@ -50,7 +48,7 @@ const PlanUsage: React.FC<PlanUsageProps> = ({
         items-center
         "
           >
-            <div>Free Plan</div>
+            <div>Max 10 folder</div>
             <small>{usagePercentage.toFixed(0)}% / 100%</small>
           </div>
         </div>
