@@ -1,10 +1,14 @@
+"use client";
+
 import TitleSection from "@/components/landing-page/TitleSection";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 import Banner from "../../../public/home.png";
 import Calendar from "../../../public/cal.png";
+import { motion, useAnimation, useInView } from "framer-motion";
+import { v4 as uuidv4 } from "uuid";
 
 import {
   CLIENTS,
@@ -12,13 +16,7 @@ import {
   PRICING_PLANS,
   reviews,
 } from "@/lib/constants";
-import { randomUUID } from "crypto";
-import CustomCard from "@/components/landing-page/CustomCard";
-import { twMerge } from "tailwind-merge";
-import clsx from "clsx";
 
-import { CardContent, CardDescription, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { TracingBeam } from "@/components/accUi/tracing-beam";
 import Link from "next/link";
 import Marquee from "@/components/accUi/marquee";
@@ -27,26 +25,50 @@ import ShineBorder from "@/components/accUi/shineBorder";
 import Footer from "@/components/accUi/footer";
 
 const Home = () => {
+  const ref = useRef(null);
+  const controls = useAnimation();
+  const isInView = useInView(ref, { once: true });
+
   const firstRow = reviews.slice(0, reviews.length / 2);
   const secondRow = reviews.slice(reviews.length / 2);
   return (
     <>
       <TracingBeam className="px-8">
         <section className="gap-4 px-4 mt-10 overflow-hidden sm:px-6 sm:flex sm:flex-col md:justify-center md:items-center -z-1 w-full">
-          <div className="mt-24">
+          <motion.div
+            initial={{ scale: 0.8, y: 150, opacity: 0.5 }}
+            animate={{ scale: 1, y: 0, opacity: 1 }}
+            transition={{
+              type: "tween",
+              delay: 0.2,
+              duration: 0.5,
+            }}
+            className="mt-24"
+          >
             <TitleSection
               pill="✨ Your Workspace, Perfected"
               title="All-In-One Collaboration and Productivity Platform"
             />
-          </div>
+          </motion.div>
 
-          <Link href="/signup">
-            <Button className="inline-flex h-12 animate-shimmer items-center justify-center rounded-3xl border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 cursor-pointer mb-14">
-              Get Cypress Free
-            </Button>
-          </Link>
+          <motion.div
+            initial={{ scale: 0.5, y: 100 }}
+            animate={{ scale: 1, y: 0 }}
+            transition={{
+              type: "tween",
+              delay: 0.4,
 
-          <div className="md:mt-[-40px] sm:w-full max-w-[750px] flex justify-center items-center mt-[-40px] relative sm:ml-0 ml-[-10px] -z-1 ">
+              duration: 0.5,
+            }}
+          >
+            <Link href="/signup">
+              <Button className="inline-flex h-12 animate-shimmer items-center justify-center rounded-3xl border border-slate-800 bg-[linear-gradient(110deg,#000103 35%,#1b2735 50%,#1e2631 65%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 cursor-pointer mb-14">
+                Get Cypress Free
+              </Button>
+            </Link>
+          </motion.div>
+
+          <div className="md:mt-[-40px] sm:w-full max-w-[750px] flex justify-center items-center mt-[-40px] relative sm:ml-0 ml-[-10px] -z-1  ">
             <ShineBorder className="" color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}>
               <Image src={Banner} alt="Application Banner" className="-z-1 " />
             </ShineBorder>
@@ -57,10 +79,7 @@ const Home = () => {
         <section className="relative">
           <div className="overflow-hidden flex after:content[''] after:dark:from-brand-dark after:to-transparent after:from-background after:bg-gradient-to-l after:right-0 after:bottom-0 after:top-0 after:w-20 after:z-10 after:absolute before:content[''] before:dark:from-brand-dark before:to-transparent before:from-background before:bg-gradient-to-r before:left-0 before:top-0 before:bottom-0 before:w-20 before:absolute before:z-10 ">
             {[...Array(2)].map((arr) => (
-              <div
-                key={randomUUID()}
-                className="flex flex-nowrap animate-slide"
-              >
+              <div key={uuidv4()} className="flex flex-nowrap animate-slide">
                 {CLIENTS.map((client) => (
                   <div
                     key={client.alt}
@@ -80,11 +99,22 @@ const Home = () => {
         </section>
         <section className="px-4 sm:px-6 flex justify-center items-center flex-col">
           <div className="w-[30%] blur-[120px] rounded-full h-32 absolute bg-brand-primaryPurple/50 -z-10 top-22" />
-          <TitleSection
-            title="Keep track of your meetings all in one place"
-            subheading="Capture your ideas, thoughts, and meeting notes in a structured and organized manner"
-            pill="Features"
-          />
+          <motion.div
+            ref={ref}
+            style={{
+              transform: isInView
+                ? "translateY(0) scale(1)"
+                : "translateY(300px) scale(0.8)",
+              opacity: isInView ? 1 : 0,
+              transition: "all 1s cubic-bezier(0.17, 0.55, 0.55, 1) 0.5s",
+            }}
+          >
+            <TitleSection
+              title="Keep track of your meetings all in one place"
+              subheading="Capture your ideas, thoughts, and meeting notes in a structured and organized manner"
+              pill="Features"
+            />
+          </motion.div>
           <div className="mt-10 max-w-[450px] flex justify-center items-center relative sm:ml-0 rounded-2xl border-8 border-washed-purple-300 border-opacity-10">
             <Image src={Calendar} alt="Banner" className="rounded-2xl" />
           </div>

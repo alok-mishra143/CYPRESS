@@ -105,7 +105,6 @@ const Page = () => {
             </FormItem>
           )}
         />
-        <StrengthPass password={form.getValues("password")} />
 
         {submitError && <FormMessage>{submitError}</FormMessage>}
         <Button

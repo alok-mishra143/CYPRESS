@@ -99,7 +99,6 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
         top-0 
         bg-background 
         w-full  
-        h-10 
         group/title 
         justify-between 
         items-center 
@@ -129,7 +128,7 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
       <Accordion
         type="multiple"
         defaultValue={[folderId || ""]}
-        className="pb-20"
+        className="pb-10 "
       >
         {folders
           .filter((folder) => !folder.in_trash)

@@ -109,7 +109,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
 
     return {
       title: dirDetails.title,
-      iconId: dirDetails.icon_id,
+      iconId: dirDetails.icon_id || "📁",
       createdAt: dirDetails.created_at,
       data: dirDetails.data,
       inTrash: dirDetails.in_trash,
@@ -127,7 +127,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       (workspace) => workspace.id === workspaceId
     );
     const workspaceBreadCrumb = workspaceDetails
-      ? `${workspaceDetails.icon_id} ${workspaceDetails.title}`
+      ? ` ${workspaceDetails.title}`
       : "";
     if (segments.length === 1) {
       return workspaceBreadCrumb;
