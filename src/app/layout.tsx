@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 
 import { ThemeProvider } from "@/lib/provider/next-theme-provider";
 import AppStateProvider from "@/lib/provider/state-provider";
@@ -35,6 +36,7 @@ export default function RootLayout({
           >
             <SupabaseUserProvider>
               <SocketProvider>
+                <Analytics />
                 {children}
                 <Toaster />
               </SocketProvider>
