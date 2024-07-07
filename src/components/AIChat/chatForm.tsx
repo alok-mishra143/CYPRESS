@@ -6,7 +6,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState, useEffect, useRef } from "react";
 import { Input } from "../ui/input";
 import Loadingsvg from "../../../public/loading";
-import { ToastAction } from "@/components/ui/toast";
 import { toast, useToast } from "@/components/ui/use-toast";
 
 interface MessageProps {
@@ -67,13 +66,16 @@ export function ChatWithAI() {
 
   const generateAiAnswer = async (prompt: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/Bard`, {
-        method: "POST",
-        body: JSON.stringify({ question: prompt }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SITE_URL}api/Bard`,
+        {
+          method: "POST",
+          body: JSON.stringify({ question: prompt }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const aiAnswer = await response.json();
       setMessages((prevMessages) => [
