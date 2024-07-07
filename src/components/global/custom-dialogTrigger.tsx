@@ -28,10 +28,10 @@ const CustomDialogTrigger: React.FC<CustomDialogTriggerProps> = ({
     <Dialog>
       <DialogTrigger className={clsx("", className)}>{children}</DialogTrigger>
       <DialogContent
-        className="h-screen
+        className="h-[80%]
         block
         sm:h-[540px]
-        overflow-scroll
+      overflow-y-auto
         w-full
         max-w-[600px]
       "

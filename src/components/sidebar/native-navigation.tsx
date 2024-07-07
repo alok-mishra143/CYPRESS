@@ -6,6 +6,8 @@ import CypressSettingsIcon from "../icons/cypressSettingsIcon";
 import CypressTrashIcon from "../icons/cypressTrashIcon";
 import Settings from "../settings/setting";
 import Trash from "../trash/trash";
+import { FaRobot } from "react-icons/fa6";
+import Chat from "../AIChat/Chat";
 
 interface NativeNavigationProps {
   myWorkspaceId: string;
@@ -62,6 +64,21 @@ const NativeNavigation: React.FC<NativeNavigationProps> = ({
             <span>Trash</span>
           </li>
         </Trash>
+        <Chat>
+          <li
+            className="group/native
+            flex
+            text-Neutrals/neutrals-7
+            transition-all
+            gap-2
+            cursor-pointer"
+          >
+            <FaRobot
+              className={` text-xl transition-all group-hover/native:fill-washed-purple-400 size-6`}
+            />
+            <span>AI Chat</span>
+          </li>
+        </Chat>
       </ul>
     </nav>
   );
