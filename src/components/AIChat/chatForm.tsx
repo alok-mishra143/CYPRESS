@@ -66,16 +66,14 @@ export function ChatWithAI() {
 
   const generateAiAnswer = async (prompt: string) => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SITE_URL}api/Bard`,
-        {
-          method: "POST",
-          body: JSON.stringify({ question: prompt }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const url = process.env.NEXT_PUBLIC_API_URL;
+      const response = await fetch(`${url}api/Bard`, {
+        method: "POST",
+        body: JSON.stringify({ question: prompt }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       const aiAnswer = await response.json();
       setMessages((prevMessages) => [
