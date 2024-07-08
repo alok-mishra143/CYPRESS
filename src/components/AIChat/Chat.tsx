@@ -22,7 +22,7 @@ const Chat: React.FC<ChatProps> = ({ children }) => {
       <DialogContent
         className="h-[80%]
         block
-        sm:h-[540px]
+      
      
         w-full
         max-w-[600px]"

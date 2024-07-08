@@ -66,14 +66,16 @@ export function ChatWithAI() {
 
   const generateAiAnswer = async (prompt: string) => {
     try {
-      const url = process.env.NEXT_PUBLIC_API_URL;
-      const response = await fetch(`${url}api/Bard`, {
-        method: "POST",
-        body: JSON.stringify({ question: prompt }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SITE_URL}api/Bard`,
+        {
+          method: "POST",
+          body: JSON.stringify({ question: prompt }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const aiAnswer = await response.json();
       setMessages((prevMessages) => [
@@ -91,7 +93,7 @@ export function ChatWithAI() {
   };
 
   return (
-    <div className="flex flex-col h-[95%] w-full max-w-5xl mx-auto bg-gray-900 text-black rounded-2xl shadow-lg">
+    <div className="flex flex-col h-[90%] sm:h-[95%] w-full max-w-5xl mx-auto bg-gray-900 text-black rounded-2xl shadow-lg">
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message, index) => (
           <div
