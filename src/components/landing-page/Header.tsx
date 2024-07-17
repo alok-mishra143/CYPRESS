@@ -255,7 +255,7 @@ const Header = () => {
           </div>
           <div className="flex space-x-2 items-center">
             <Link
-              className="group hover:-translate-y-0.5 active:scale-[0.98] relative z-10 bg-transparent hover:border-secondary hover:bg-blue-500 border border-transparent text-white text-sm md:text-sm transition font-medium duration-200 rounded-md px-4 py-2 flex items-center justify-center underline"
+              className="group hover:-translate-y-0.5 active:scale-[0.98] relative z-10 bg-transparent hover:border-secondary hover:bg-blue-500 border border-transparent text-white text-sm md:text-sm transition font-medium duration-200 rounded-md px-4 py-2 sm:flex items-center justify-center underline hidden "
               href="/signup"
             >
               Sign-up
