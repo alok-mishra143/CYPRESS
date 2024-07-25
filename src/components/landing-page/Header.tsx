@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
-import { HoverBorderGradient } from "../accUi/hoverborderButton";
 
 const components: { title: string; href: string; description: string }[] = [
   {

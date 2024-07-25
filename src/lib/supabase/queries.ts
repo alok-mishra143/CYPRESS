@@ -331,6 +331,7 @@ export const deleteFile = async (fileId: string) => {
 export const deleteFolder = async (folderId: string) => {
   if (!folderId) return;
   await db.delete(files).where(eq(files.id, folderId));
+  await db.delete(folders).where(eq(folders.id, folderId));
 };
 
 export const findUser = async (userId: string) => {
