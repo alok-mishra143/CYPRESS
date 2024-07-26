@@ -16,8 +16,11 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIo) => {
     const io = new ServerIO(httpServer, {
       path,
       addTrailingSlash: false,
+      allowEIO3: true,
+      transports: ["websocket", "polling"],
     });
     io.on("connection", (s) => {
+      console.log(" socket is connected connected");
       s.on("create-room", (fileId) => {
         s.join(fileId);
       });
