@@ -18,10 +18,6 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIo) => {
       addTrailingSlash: false,
       allowEIO3: true,
       transports: ["websocket"],
-      cors: {
-        origin: "*", // Adjust this to your client's origin
-        methods: ["GET", "POST"],
-      },
     });
     io.on("connection", (s) => {
       console.log(" socket is connected connected");
