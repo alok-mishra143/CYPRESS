@@ -14,10 +14,14 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIo) => {
     const path = "/api/socket/io";
     const httpServer: NetServer = res.socket.server as any;
     const io = new ServerIO(httpServer, {
-      path,
+      path: "/api/socket/io",
       addTrailingSlash: false,
       allowEIO3: true,
-      transports: ["websocket", "polling"],
+      transports: ["websocket"],
+      cors: {
+        origin: "*", // Adjust this to your client's origin
+        methods: ["GET", "POST"],
+      },
     });
     io.on("connection", (s) => {
       console.log(" socket is connected connected");
