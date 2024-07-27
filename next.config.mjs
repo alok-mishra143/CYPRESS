@@ -1,7 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["veiozliamnyiomtxrfsa.supabase.co", "avatar.vercel.sh"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "veiozliamnyiomtxrfsa.supabase.co",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "avatar.vercel.sh",
+        pathname: "**",
+      },
+    ],
   },
 };
 

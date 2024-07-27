@@ -19,10 +19,6 @@ const StrengthPass = ({ password }: StrengthPassProps) => {
     setProgress(passProgress);
   }, [password]);
 
-  console.log("password", password);
-  console.log("passvalue", passvalue);
-  console.log("progress", progress);
-
   return (
     <div className="bg-blue">
       <div>{passvalue}</div>

@@ -21,11 +21,9 @@ export function ChatWithAI() {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const copyTextToClipboard = (text: string) => {
-    console.log("Copying text to clipboard: ", text);
     navigator.clipboard
       .writeText(text)
       .then(() => {
-        console.log("Text copied to clipboard");
         toast({
           title: "Text copied to clipboard",
           description: "the AI response has been copied to your clipboard.",

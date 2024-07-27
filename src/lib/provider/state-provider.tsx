@@ -328,7 +328,7 @@ const AppStateProvider: React.FC<AppStateProviderProps> = ({ children }) => {
     if (!folderId || !workspaceId) return;
     const fetchFiles = async () => {
       const { error: filesError, data } = await getFiles(folderId);
-      console.log("Files", data);
+      // console.log("Files", data);
       if (filesError) {
         console.log(filesError);
       }
