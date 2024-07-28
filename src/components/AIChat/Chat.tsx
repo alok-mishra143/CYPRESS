@@ -20,12 +20,14 @@ const Chat: React.FC<ChatProps> = ({ children }) => {
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
-        className="h-[80%]
+        className="h-full
+        
         block
       
      
         w-full
-        max-w-[600px]"
+        max-w-[900px]
+        max-h-[900px]"
       >
         <DialogHeader>
           <DialogTitle>Chat With AI </DialogTitle>

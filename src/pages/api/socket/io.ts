@@ -14,13 +14,10 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIo) => {
     const path = "/api/socket/io";
     const httpServer: NetServer = res.socket.server as any;
     const io = new ServerIO(httpServer, {
-      path: "/api/socket/io",
+      path,
       addTrailingSlash: false,
-      allowEIO3: true,
-      transports: ["websocket"],
     });
     io.on("connection", (s) => {
-      console.log(" socket is connected connected");
       s.on("create-room", (fileId) => {
         s.join(fileId);
       });

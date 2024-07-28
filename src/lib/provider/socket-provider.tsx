@@ -22,7 +22,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    console.log("using socket provider 🟢");
     const socketInstance = new (ClientIO as any)(
       process.env.NEXT_PUBLIC_SITE_URL!,
       {
@@ -31,12 +30,10 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       }
     );
     socketInstance.on("connect", () => {
-      console.log(" socket is connected connected");
       setIsConnected(true);
     });
 
     socketInstance.on("disconnect", () => {
-      console.log(" socket is disconnected");
       setIsConnected(false);
     });
 

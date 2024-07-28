@@ -51,6 +51,7 @@ const Home = () => {
           <motion.div
             initial="hidden"
             whileInView="visible"
+            viewport={{ once: true }}
             variants={sectionVariants}
             className="mt-24"
           >
@@ -64,6 +65,7 @@ const Home = () => {
             initial="hidden"
             whileInView="visible"
             variants={sectionVariants}
+            viewport={{ once: true }}
           >
             <Link href="/signup">
               <Button className="inline-flex h-12 animate-shimmer items-center justify-center rounded-3xl border border-slate-800 bg-[linear-gradient(110deg,#000103 35%,#1b2735 50%,#1e2631 65%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 cursor-pointer mb-14">
@@ -77,6 +79,7 @@ const Home = () => {
             initial="hidden"
             whileInView="visible"
             variants={sectionVariants}
+            viewport={{ once: true }}
           >
             <div className="w-[50%] blur-[120px] rounded-full h-32 absolute bg-brand-primaryPurple/50 -z-10 top-22" />
 
@@ -93,6 +96,7 @@ const Home = () => {
             initial="hidden"
             whileInView="visible"
             variants={sectionVariants}
+            viewport={{ once: true }}
           >
             {[...Array(2)].map((arr) => (
               <div key={uuidv4()} className="flex flex-nowrap animate-slide">
@@ -121,6 +125,7 @@ const Home = () => {
             initial="hidden"
             whileInView="visible"
             variants={sectionVariants}
+            viewport={{ once: true }}
           >
             <TitleSection
               title="Chat with AI Assistant"
@@ -133,6 +138,7 @@ const Home = () => {
             initial="hidden"
             whileInView="visible"
             variants={sectionVariants}
+            viewport={{ once: true }}
           >
             <Image
               src={Calendar}
@@ -150,6 +156,7 @@ const Home = () => {
             initial="hidden"
             whileInView="visible"
             variants={sectionVariants}
+            viewport={{ once: true }}
           >
             <h1 className="text-4xl md:text-5xl font-bold leading-tight">
               Access your documents anywhere in the World
@@ -163,6 +170,7 @@ const Home = () => {
             initial="hidden"
             whileInView="visible"
             variants={sectionVariants}
+            viewport={{ once: true }}
           >
             <CustomGlobe className="h-[200px] md:h-[300px] w-[200px] md:w-[300px] transform md:translate-x-1/2" />
           </motion.div>
@@ -175,6 +183,7 @@ const Home = () => {
             initial="hidden"
             whileInView="visible"
             variants={sectionVariants}
+            viewport={{ once: true }}
           >
             <TitleSection
               title="Trusted by All"
@@ -185,6 +194,7 @@ const Home = () => {
               initial="hidden"
               whileInView="visible"
               variants={sectionVariants}
+              viewport={{ once: true }}
             >
               <Marquee
                 pauseOnHover
@@ -212,6 +222,7 @@ const Home = () => {
             initial="hidden"
             whileInView="visible"
             variants={sectionVariants}
+            viewport={{ once: true }}
           >
             <Footer />
           </motion.div>

@@ -62,6 +62,12 @@ export function ChatWithAI() {
     setPromptValue("");
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleClick();
+    }
+  };
+
   const generateAiAnswer = async (prompt: string) => {
     try {
       const response = await fetch(
@@ -138,11 +144,12 @@ export function ChatWithAI() {
         ))}
         <div ref={messagesEndRef} />
       </div>
-      <div className=" rounded-b-2xl p-4 flex items-center gap-2 ">
+      <div className="rounded-b-2xl p-4 flex items-center gap-2">
         <Input
           placeholder="Type your message..."
           className="flex-1 rounded-2xl resize-none p-3 bg-gray-900 text-white focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
           onChange={handleChange}
+          onKeyPress={handleKeyPress}
           value={promptValue}
         />
         <Button
