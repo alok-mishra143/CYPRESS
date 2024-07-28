@@ -4,6 +4,7 @@ import { getUserSubscriptionStatus } from "@/lib/supabase/queries";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import React from "react";
+import Loading from "./loading";
 
 const Page = async () => {
   const supabase = createClient();

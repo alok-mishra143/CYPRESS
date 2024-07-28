@@ -81,8 +81,6 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   const [saving, setSaving] = useState(false);
   const [localCursors, setLocalCursors] = useState<any>([]);
 
-  console.log("isconnected", isConnected);
-
   const details = useMemo(() => {
     let selectedDir;
     if (dirType === "file") {
@@ -218,7 +216,6 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
         payload: { folderId: fileId, workspaceId },
       });
       await deleteFolder(fileId);
-      console.log("folder deleted");
       router.replace(`/dashboard/${workspaceId}`);
     }
   };
@@ -359,7 +356,6 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   }, [fileId, workspaceId, quill, dirType, dispatch, router]);
 
   useEffect(() => {
-    console.log("socket from quill editor", socket);
     if (quill === null || socket === null || !fileId || !localCursors.length)
       return;
     const socketHandler = (range: any, roomId: string, cursorId: string) => {
@@ -380,18 +376,15 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
 
   //rooms
   useEffect(() => {
-    console.log("Creating romm", socket);
     if (socket === null || quill === null || !fileId) return;
     socket.emit("create-room", fileId);
   }, [socket, quill, fileId]);
 
   //Send quill changes to all clients
   useEffect(() => {
-    console.log("listing the change from quill");
     if (quill === null || socket === null || !fileId || !user) return;
 
     const selectionChangeHandler = (cursorId: string) => {
-      console.log("cursorId getting the range ", cursorId);
       return (range: any, oldRange: any, source: any) => {
         if (source === "user" && cursorId) {
           socket.emit("send-cursor-move", range, fileId, cursorId);
@@ -467,10 +460,8 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   ]);
 
   useEffect(() => {
-    console.log("socket", socket);
     if (quill === null || socket === null) return;
     const socketHandler = (deltas: any, id: string) => {
-      console.log("sockethandler deltas");
       if (id === fileId) {
         quill.updateContents(deltas);
       }
