@@ -1,5 +1,4 @@
 import React from "react";
-import { Subscription } from "@/lib/supabase/supabase.types";
 import db from "@/lib/supabase/db";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import CypressProfileIcon from "../icons/cypressProfileIcon";
@@ -7,11 +6,7 @@ import { LogOut } from "lucide-react";
 import LogoutButton from "../global/log-out";
 import { createClient } from "@/lib/supabase/server";
 
-interface UserCardProps {
-  subscription: Subscription | null;
-}
-
-const UserCard: React.FC<UserCardProps> = async ({ subscription }) => {
+const UserCard: React.FC = async () => {
   const supabase = createClient();
   const {
     data: { user },

@@ -59,8 +59,6 @@ import LogoutButton from "../global/log-out";
 
 const SettingsForm = () => {
   const { toast } = useToast();
-  const { user, subscription } = useSupabaseUser();
-  // const { open, setOpen } = useSubscriptionModal();
   const router = useRouter();
   const supabase = createClient();
   const { state, workspaceId, dispatch } = useAppState();
@@ -71,30 +69,12 @@ const SettingsForm = () => {
   const titleTimerRef = useRef<ReturnType<typeof setTimeout>>();
   const [uploadingProfilePic, setUploadingProfilePic] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
-  const [loadingPortal, setLoadingPortal] = useState(false);
+  const { user } = useSupabaseUser();
 
-  //WIP PAYMENT PORTAL
-
-  // const redirectToCustomerPortal = async () => {
-  //   setLoadingPortal(true);
-  //   try {
-  //     const { url, error } = await postData({
-  //       url: "/api/create-portal-link",
-  //     });
-  //     window.location.assign(url);
-  //   } catch (error) {
-  //     console.log(error);
-  //     setLoadingPortal(false);
-  //   }
-  //   setLoadingPortal(false);
-  // };
   //addcollborators
   const addCollaborator = async (profile: User) => {
     if (!workspaceId) return;
-    if (subscription?.status !== "active" && collaborators.length >= 2) {
-      // setOpen(true);
-      return;
-    }
+
     await addCollaborators([profile], workspaceId);
     setCollaborators([...collaborators, profile]);
   };
@@ -165,9 +145,6 @@ const SettingsForm = () => {
     } else setPermissions(val);
   };
 
-  //CHALLENGE fetching avatar details
-  //WIP Payment Portal redirect
-
   useEffect(() => {
     const showingWorkspace = state.workspaces.find(
       (workspace) => workspace.id === workspaceId
@@ -219,13 +196,8 @@ const SettingsForm = () => {
           accept="image/*"
           placeholder="Workspace Logo"
           onChange={onChangeWorkspaceLogo}
-          disabled={uploadingLogo || subscription?.status !== "active"}
+          disabled={uploadingLogo}
         />
-        {subscription?.status !== "active" && (
-          <small className="text-muted-foreground">
-            To customize your workspace, you need to be on a Pro Plan
-          </small>
-        )}
       </div>
       <>
         <Label htmlFor="permissions">Permissions</Label>
@@ -375,7 +347,11 @@ const SettingsForm = () => {
         </Alert>
         <p className="flex items-center gap-2 mt-6">
           <UserIcon size={20} /> Profile
+          <small className="text-muted-foreground cursor-not-allowed">
+            {user ? user.email : ""}
+          </small>
         </p>
+
         <Separator />
         <div className="flex items-center">
           <Avatar>
@@ -385,9 +361,6 @@ const SettingsForm = () => {
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col ml-6">
-            <small className="text-muted-foreground cursor-not-allowed">
-              {user ? user.email : ""}
-            </small>
             <Label
               htmlFor="profilePicture"
               className="text-sm text-muted-foreground"
@@ -409,47 +382,8 @@ const SettingsForm = () => {
             <LogOut />
           </div>
         </LogoutButton>
-        <p className="flex items-center gap-2 mt-6">
-          <CreditCard size={20} /> Billing & Plan
-        </p>
+
         <Separator />
-        <p className="text-muted-foreground">
-          You are currently on a{" "}
-          {subscription?.status === "active" ? "Pro" : "Free"} Plan
-        </p>
-        <Link
-          href="/"
-          target="_blank"
-          className="text-muted-foreground flex flex-row items-center gap-2"
-        >
-          View Plans <ExternalLink size={16} />
-        </Link>
-        {subscription?.status === "active" ? (
-          <div>
-            <Button
-              type="button"
-              size="sm"
-              variant={"secondary"}
-              disabled={loadingPortal}
-              className="text-sm"
-              // onClick={redirectToCustomerPortal}
-            >
-              Manage Subscription
-            </Button>
-          </div>
-        ) : (
-          <div>
-            <Button
-              type="button"
-              size="sm"
-              variant={"secondary"}
-              className="text-sm"
-              // onClick={() => setOpen(true)}
-            >
-              Start Plan
-            </Button>
-          </div>
-        )}
       </>
       <AlertDialog open={openAlertMessage}>
         <AlertDialogContent>

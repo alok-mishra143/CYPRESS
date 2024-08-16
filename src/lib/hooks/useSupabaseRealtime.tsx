@@ -1,21 +1,41 @@
-import React, { useEffect } from "react";
+"use client";
+
+import React, { use, useEffect } from "react";
 
 import { File } from "../supabase/supabase.types";
 import { useRouter } from "next/navigation";
 import { useAppState } from "../provider/state-provider";
-import { createClient } from "../supabase/client";
-
+import Realtime_supabase from "@/components/RealTime/RealTime";
 const useSupabaseRealtime = () => {
-  const supabase = createClient();
   const { dispatch, state, workspaceId: selectedWorskpace } = useAppState();
   const router = useRouter();
+  const supabase = Realtime_supabase;
+
   useEffect(() => {
+    console.log("testing the supabase connection");
+    supabase
+      .channel("schema-db-changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+        },
+        (payload) => console.log(payload)
+      )
+      .subscribe();
+  }, [supabase]);
+
+  useEffect(() => {
+    // console.log("🟢 Getting events ");
+
     const channel = supabase
-      .channel("db-changes")
+      .channel("schema-db-changes")
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "files" },
         async (payload: any) => {
+          console.log("🟢 PAYLOAD", payload);
           if (payload.eventType === "INSERT") {
             console.log("🟢 RECEIVED REAL TIME EVENT");
             const {

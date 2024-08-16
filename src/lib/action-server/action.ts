@@ -3,7 +3,6 @@
 import { z } from "zod";
 
 import { FormSchema } from "../types";
-import { getUserSubscriptionStatus } from "../supabase/queries";
 import { createClient } from "../supabase/server";
 
 export async function actionLoginUser({
@@ -53,14 +52,7 @@ export async function getuser() {
       throw new Error("User data not found");
     }
 
-    const { data: subscriptionData, error: subscriptionError } =
-      await getUserSubscriptionStatus(data.user.id);
-
-    if (subscriptionError) {
-      throw subscriptionError;
-    }
-
-    return { data, subscriptionData };
+    return { data };
   } catch (error) {
     // Return the error and any available data
     throw error;

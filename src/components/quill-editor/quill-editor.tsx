@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import "quill/dist/quill.snow.css";
 import { Button } from "../ui/button";
+import Realtime_supabase from "../RealTime/RealTime";
 
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -21,6 +22,7 @@ import { Badge } from "../ui/badge";
 import Image from "next/image";
 import { File, Folder, workspace } from "@/lib/supabase/supabase.types";
 import { createClient } from "@/lib/supabase/client";
+// import { createClient } from "@supabase/supabase-js";
 import { useAppState } from "@/lib/provider/state-provider";
 import { useSupabaseUser } from "@/lib/provider/supabase-userProvider";
 import {
@@ -67,6 +69,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   fileId,
 }) => {
   const supabase = createClient();
+  // const supabase = Realtime_supabase;
   const { state, workspaceId, folderId, dispatch } = useAppState();
   const saveTimerRef = useRef<ReturnType<typeof setTimeout>>();
   const { user } = useSupabaseUser();
@@ -80,6 +83,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   const [deletingBanner, setDeletingBanner] = useState(false);
   const [saving, setSaving] = useState(false);
   const [localCursors, setLocalCursors] = useState<any>([]);
+  //testing supabase real time
 
   const details = useMemo(() => {
     let selectedDir;
@@ -94,11 +98,6 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
         .find((workspace) => workspace.id === workspaceId)
         ?.folders.find((folder) => folder.id === fileId);
     }
-    if (dirType === "workspace") {
-      selectedDir = state.workspaces.find(
-        (workspace) => workspace.id === fileId
-      );
-    }
 
     if (selectedDir) {
       return selectedDir;
@@ -108,10 +107,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       title: dirDetails.title,
       iconId: dirDetails.icon_id || "📁",
       createdAt: dirDetails.created_at,
-      data: dirDetails.data,
-      inTrash: dirDetails.in_trash,
-      bannerUrl: dirDetails.banner_url,
-    } as unknown as workspace | Folder | File;
+    } as unknown as Folder | File;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, workspaceId, folderId]);
 
@@ -273,17 +269,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       await supabase.storage.from("file-banners").remove([`banner-${fileId}`]);
       await updateFolder({ banner_url: "" }, fileId);
     }
-    if (dirType === "workspace") {
-      dispatch({
-        type: "UPDATE_WORKSPACE",
-        payload: {
-          workspace: { banner_url: "" },
-          workspaceId: fileId,
-        },
-      });
-      await supabase.storage.from("file-banners").remove([`banner-${fileId}`]);
-      await updateWorkspace({ banner_url: "" }, fileId);
-    }
+
     setDeletingBanner(false);
   };
 
@@ -335,22 +321,6 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
           },
         });
       }
-      if (dirType === "workspace") {
-        const { data: selectedDir, error } = await getWorkspaceDetails(fileId);
-        if (error || !selectedDir) {
-          return router.replace("/dashboard");
-        }
-        if (!selectedDir[0] || quill === null) return;
-        if (!selectedDir[0].data) return;
-        quill.setContents(JSON.parse(selectedDir[0].data || ""));
-        dispatch({
-          type: "UPDATE_WORKSPACE",
-          payload: {
-            workspace: { data: selectedDir[0].data },
-            workspaceId: fileId,
-          },
-        });
-      }
     };
     fetchInformation();
   }, [fileId, workspaceId, quill, dirType, dispatch, router]);
@@ -363,11 +333,13 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
         const cursorToMove = localCursors.find(
           (c: any) => c.cursors()?.[0].id === cursorId
         );
+        console.log("cursorToMove", cursorToMove);
         if (cursorToMove) {
           cursorToMove.moveCursor(cursorId, range);
         }
       }
     };
+    console.log("socket onn");
     socket.on("receive-cursor-move", socketHandler);
     return () => {
       socket.off("receive-cursor-move", socketHandler);
@@ -378,15 +350,20 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   useEffect(() => {
     if (socket === null || quill === null || !fileId) return;
     socket.emit("create-room", fileId);
+
+    console.log("room created");
   }, [socket, quill, fileId]);
 
   //Send quill changes to all clients
   useEffect(() => {
+    console.log("socket", socket);
     if (quill === null || socket === null || !fileId || !user) return;
 
     const selectionChangeHandler = (cursorId: string) => {
       return (range: any, oldRange: any, source: any) => {
         if (source === "user" && cursorId) {
+          console.log("cursorId", cursorId);
+          console.log("range", range);
           socket.emit("send-cursor-move", range, fileId, cursorId);
         }
       };
@@ -399,16 +376,6 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       const quillLength = quill.getLength();
       saveTimerRef.current = setTimeout(async () => {
         if (contents && quillLength !== 1 && fileId) {
-          if (dirType == "workspace") {
-            dispatch({
-              type: "UPDATE_WORKSPACE",
-              payload: {
-                workspace: { data: JSON.stringify(contents) },
-                workspaceId: fileId,
-              },
-            });
-            await updateWorkspace({ data: JSON.stringify(contents) }, fileId);
-          }
           if (dirType == "folder") {
             if (!workspaceId) return;
             dispatch({
@@ -436,7 +403,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
           }
         }
         setSaving(false);
-      }, 500);
+      }, 100);
       socket.emit("send-changes", delta, fileId);
     };
     quill.on("text-change", quillHandler);
@@ -467,15 +434,18 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       }
     };
     socket.on("receive-changes", socketHandler);
+    console.log("getting changes socket onn");
     return () => {
       socket.off("receive-changes", socketHandler);
+      console.log("getting changes socket off");
     };
   }, [quill, socket, fileId]);
 
   useEffect(() => {
+    console.log("channel");
     if (!fileId || quill === null) return;
     const room = supabase.channel(fileId);
-    const subscription = room
+    room
       .on("presence", { event: "sync" }, () => {
         const newState = room.presenceState();
         const newCollaborators = Object.values(newState).flat() as any;

@@ -3,7 +3,7 @@
 import { validate } from "uuid";
 import { workspaces, files, folders, users } from "../../../migrations/schema";
 import db from "./db";
-import { Folder, Subscription, User, workspace, File } from "./supabase.types";
+import { Folder, User, workspace, File } from "./supabase.types";
 import { and, eq, ilike, notExists } from "drizzle-orm";
 import { collaborators } from "./schema";
 
@@ -14,19 +14,6 @@ export const createWorkspace = async (workspace: workspace) => {
   } catch (error) {
     console.log(error);
     return { data: null, error: "Error" };
-  }
-};
-
-export const getUserSubscriptionStatus = async (userId: string) => {
-  try {
-    const data = await db.query.subscriptions.findFirst({
-      where: (s, { eq }) => eq(s.userId, userId),
-    });
-    if (data) return { data: data as Subscription, error: null };
-    else return { data: null, error: null };
-  } catch (error) {
-    console.log(error);
-    return { data: null, error: `Error` };
   }
 };
 
@@ -114,10 +101,7 @@ export const getPrivateWorkspaces = async (userId: string) => {
       workspaceOwner: workspaces.workspace_owner,
       title: workspaces.title,
       iconId: workspaces.icon_id,
-      data: workspaces.data,
-      inTrash: workspaces.in_trash,
       logo: workspaces.logo,
-      bannerUrl: workspaces.banner_url,
     })
     .from(workspaces)
     .where(
@@ -143,10 +127,7 @@ export const getCollaboratingWorkspaces = async (userId: string) => {
       workspaceOwner: workspaces.workspace_owner,
       title: workspaces.title,
       iconId: workspaces.icon_id,
-      data: workspaces.data,
-      inTrash: workspaces.in_trash,
       logo: workspaces.logo,
-      bannerUrl: workspaces.banner_url,
     })
     .from(users)
     .innerJoin(collaborators, eq(users.id, collaborators.userId))
@@ -164,10 +145,6 @@ export const getSharedWorkspaces = async (userId: string) => {
       workspaceOwner: workspaces.workspace_owner,
       title: workspaces.title,
       iconId: workspaces.icon_id,
-      data: workspaces.data,
-      inTrash: workspaces.in_trash,
-      logo: workspaces.logo,
-      bannerUrl: workspaces.banner_url,
     })
     .from(workspaces)
     .orderBy(workspaces.created_at)

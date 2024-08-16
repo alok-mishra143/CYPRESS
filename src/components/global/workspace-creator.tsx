@@ -3,14 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { useToast } from "../ui/use-toast";
 
-import { Subscription, User, workspace } from "@/lib/supabase/supabase.types";
+import { User, workspace } from "@/lib/supabase/supabase.types";
 import { v4 } from "uuid";
 import { useSupabaseUser } from "@/lib/provider/supabase-userProvider";
-import {
-  addCollaborators,
-  createWorkspace,
-  getUserSubscriptionStatus,
-} from "@/lib/supabase/queries";
+import { addCollaborators, createWorkspace } from "@/lib/supabase/queries";
 
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
@@ -38,7 +34,6 @@ const WorkspaceCreator = () => {
   const [collaborators, setCollaborators] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [subscription, setSubscription] = useState<Subscription | null>(null);
 
   const addCollaborator = (user: User) => {
     setCollaborators([...collaborators, user]);
@@ -53,15 +48,12 @@ const WorkspaceCreator = () => {
     const uuid = v4();
     if (user?.id) {
       const newWorkspace: workspace = {
-        data: null,
         created_at: new Date().toISOString(),
         icon_id: "💼",
         id: uuid,
-        in_trash: "",
         title,
         workspace_owner: user.id,
         logo: null,
-        banner_url: "",
       };
       if (permissions === "private") {
         toast({ title: "Success", description: "Created the workspace" });

@@ -3,7 +3,6 @@ import {
   getFolders,
   getPrivateWorkspaces,
   getSharedWorkspaces,
-  getUserSubscriptionStatus,
 } from "@/lib/supabase/queries";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
@@ -33,15 +32,13 @@ const Sidebar = async ({ params, className }: SidebarProps) => {
   if (!user) return;
 
   // getting the subscriptions
-  const { data: subscriptionData, error: subscriptionError } =
-    await getUserSubscriptionStatus(user.id);
 
   //folders
   const { data: workspaceFolderData, error: foldersError } = await getFolders(
     params.workspaceId
   );
   //error
-  if (subscriptionError || foldersError) redirect("/dashboard");
+  if (foldersError) redirect("/dashboard");
 
   // get workspace
   const [privateWorkspaces, collaboratingWorkspaces, sharedWorkspaces] =
@@ -93,7 +90,7 @@ const Sidebar = async ({ params, className }: SidebarProps) => {
           />
         </ScrollArea>
       </div>
-      <UserCard subscription={subscriptionData} />
+      <UserCard />
     </aside>
   );
 };

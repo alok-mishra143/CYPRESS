@@ -5,19 +5,20 @@ Welcome to the Notion Clone project! This is an open-source project aiming to re
 [![Deploy](https://img.shields.io/badge/Deploy-Vercel-blue?style=for-the-badge)](https://notion-v2.vercel.app/)
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-blue?style=for-the-badge&logo=github)](https://github.com/alok-mishra143/notionV2)
 
+![Notion Clone Preview](https://github.com/user-attachments/assets/2eed3014-559c-4ab1-b37c-bac51dd9345b)
+
 ## Features
 
-✨ **Dynamic Page Creation**: Create and manage pages dynamically, similar to Notion.
-
-📝 **Rich Text Editor**: Edit content with a rich text editor.
-
-🗄️ **Database Integration**: Utilize Supabase for backend database services.
-
-📱 **Responsive Design**: Mobile-friendly UI built with Tailwind CSS.
-
-🔐 **Authentication**: Secure user authentication with Supabase Auth.
-
+✨ **Dynamic Page Creation**: Create and manage pages dynamically, similar to Notion.  
+📝 **Rich Text Editor**: Edit content with a rich text editor.  
+🗄️ **Database Integration**: Utilize Supabase for backend database services.  
+📱 **Responsive Design**: Mobile-friendly UI built with Tailwind CSS.  
+🔐 **Authentication**: Secure user authentication with Supabase Auth.  
 🤝 **Real-time Collaboration**: Collaborate in real-time on pages.
+
+![Features Preview](https://github.com/user-attachments/assets/1decbd99-b182-460d-886a-e4efcb25b9ef)
+
+https://github.com/user-attachments/assets/4596de47-b22c-4fad-a9af-c64689232821
 
 ## Technologies Used
 
@@ -123,4 +124,4 @@ If you have any questions or need further assistance, please open an issue or re
 
 Happy coding! 🚀
 
-![Notion Clone Screenshot](https://via.placeholder.com/1200x600)
+---

@@ -5,7 +5,6 @@ import { getFolders, getWorkspaceDetails } from "@/lib/supabase/queries";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
-import Loading from "./loading";
 
 const Workspace = async ({ params }: { params: { workspaceId: string } }) => {
   const { data: workspaceFolderData, error: foldersError } = await getFolders(

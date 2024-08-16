@@ -12,7 +12,7 @@ import {
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Subscription, workspace } from "@/lib/supabase/supabase.types";
+import { workspace } from "@/lib/supabase/supabase.types";
 import EmojiPicker from "../global/emoji-picker";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CreateWorkspaceFormSchema } from "@/lib/types";
@@ -26,10 +26,9 @@ import Loader from "../global/Loader";
 import { useRouter } from "next/navigation";
 interface DashboardSetupProps {
   user: AuthUser;
-  subscription: Subscription | null;
 }
 
-const DashboardSetup = ({ subscription, user }: DashboardSetupProps) => {
+const DashboardSetup = ({ user }: DashboardSetupProps) => {
   const router = useRouter();
   const { dispatch } = useAppState();
   const supabase = createClient();
@@ -76,19 +75,16 @@ const DashboardSetup = ({ subscription, user }: DashboardSetupProps) => {
     }
     try {
       const newWorkspace: workspace = {
-        data: null,
         created_at: new Date().toISOString(),
         icon_id: selectedEmoji,
         id: workspaceUUID,
-        in_trash: "",
         title: value.workspaceName,
         workspace_owner: user.id,
         logo: filePath || null,
-        banner_url: "",
       };
       const { data, error: createError } = await createWorkspace(newWorkspace);
       if (createError) {
-        throw new Error();
+        console.log(createError, "Error");
       }
       dispatch({
         type: "ADD_WORKSPACE",
@@ -186,16 +182,6 @@ const DashboardSetup = ({ subscription, user }: DashboardSetupProps) => {
               <small className="text-red-600">
                 {errors?.logo?.message?.toString()}
               </small>
-              {subscription?.status !== "active" && (
-                <small
-                  className="
-              text-muted-foreground
-              block
-          "
-                >
-                  To customize your workspace, you need to be on a Pro Plan
-                </small>
-              )}
             </div>
             <div className="self-end">
               <Button disabled={isLoading} type="submit">

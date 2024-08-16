@@ -1,10 +1,8 @@
 import DashboardSetup from "@/components/dashboard-setup/dashboard-setup";
 import db from "@/lib/supabase/db";
-import { getUserSubscriptionStatus } from "@/lib/supabase/queries";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import React from "react";
-import Loading from "./loading";
 
 const Page = async () => {
   const supabase = createClient();
@@ -18,11 +16,6 @@ const Page = async () => {
     where: (workspace, { eq }) => eq(workspace.workspace_owner, user.id),
   });
 
-  const { data: subscription, error: subscriptionError } =
-    await getUserSubscriptionStatus(user.id);
-
-  if (subscriptionError) return;
-
   if (!workspace)
     return (
       <div
@@ -34,7 +27,7 @@ const Page = async () => {
         items-center
   "
       >
-        <DashboardSetup user={user} subscription={subscription} />
+        <DashboardSetup user={user} />
       </div>
     );
 

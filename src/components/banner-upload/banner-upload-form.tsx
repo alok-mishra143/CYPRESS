@@ -75,17 +75,6 @@ const BannerUploadForm: React.FC<BannerUploadFormProps> = ({ dirType, id }) => {
           },
         });
         await updateFolder({ banner_url: filePath }, id);
-      } else if (dirType === "workspace") {
-        if (!workspaceId) return;
-        await uploadBanner();
-        dispatch({
-          type: "UPDATE_WORKSPACE",
-          payload: {
-            workspace: { banner_url: filePath },
-            workspaceId,
-          },
-        });
-        await updateWorkspace({ banner_url: filePath }, id);
       }
     } catch (error) {}
   };

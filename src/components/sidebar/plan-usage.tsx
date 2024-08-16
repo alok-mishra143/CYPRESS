@@ -1,6 +1,5 @@
 "use client";
 import { MAX_FOLDERS_FREE_PLAN } from "@/lib/constants";
-import { Subscription } from "@/lib/supabase/supabase.types";
 import React, { useEffect, useState } from "react";
 import { Progress } from "../ui/progress";
 
@@ -9,7 +8,7 @@ import CypressDiamondIcon from "../icons/cypressDiamongIcon";
 
 interface PlanUsageProps {
   foldersLength: number;
-  subscription: Subscription | null;
+  subscription: null;
 }
 
 const PlanUsage: React.FC<PlanUsageProps> = ({
@@ -31,7 +30,7 @@ const PlanUsage: React.FC<PlanUsageProps> = ({
 
   return (
     <article className="mb-4">
-      {subscription?.status !== "active" && (
+      {subscription !== "active" && (
         <div
           className="flex 
           gap-2
@@ -53,7 +52,7 @@ const PlanUsage: React.FC<PlanUsageProps> = ({
           </div>
         </div>
       )}
-      {subscription?.status !== "active" && (
+      {subscription !== "active" && (
         <Progress value={usagePercentage} className="h-1" />
       )}
     </article>

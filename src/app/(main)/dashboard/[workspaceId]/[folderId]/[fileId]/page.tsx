@@ -4,6 +4,7 @@ import React from "react";
 import { getFileDetails } from "@/lib/supabase/queries";
 import { redirect } from "next/navigation";
 import QuillEditor from "@/components/quill-editor/quill-editor";
+import CollaborativeEditor from "@/components/quill-editor/editor2";
 
 const File = async ({ params }: { params: { fileId: string } }) => {
   const { data, error } = await getFileDetails(params.fileId);
