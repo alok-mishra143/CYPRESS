@@ -3,9 +3,15 @@
 Welcome to the Notion Clone project! This is an open-source project aiming to replicate the core functionalities of Notion, using modern web development technologies such as Next.js, TypeScript, Tailwind CSS, and Supabase.
 
 [![Deploy](https://img.shields.io/badge/Deploy-Vercel-blue?style=for-the-badge)](https://notion-v2.vercel.app/)
+
+
+
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-blue?style=for-the-badge&logo=github)](https://github.com/alok-mishra143/notionV2)
 
 ![Notion Clone Preview](https://github.com/user-attachments/assets/2eed3014-559c-4ab1-b37c-bac51dd9345b)
+
+
+
 
 ## Features
 
@@ -19,6 +25,13 @@ Welcome to the Notion Clone project! This is an open-source project aiming to re
 ![Features Preview](https://github.com/user-attachments/assets/1decbd99-b182-460d-886a-e4efcb25b9ef)
 
 https://github.com/user-attachments/assets/4596de47-b22c-4fad-a9af-c64689232821
+
+
+## generate content using AI
+
+
+
+https://github.com/user-attachments/assets/d41a53c3-0ddf-4630-a17e-d314437b3186
 
 ## Technologies Used
 
