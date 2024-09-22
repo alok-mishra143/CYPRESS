@@ -8,7 +8,6 @@ import React, {
 } from "react";
 import "quill/dist/quill.snow.css";
 import { Button } from "../ui/button";
-import Realtime_supabase from "../RealTime/RealTime";
 
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -40,6 +39,7 @@ import EmojiPicker from "../global/emoji-picker";
 import { XCircleIcon } from "lucide-react";
 import BannerUpload from "../banner-upload/banner-upload";
 import { useSocket } from "@/lib/provider/socket-provider";
+import GenerateTemplate from "../AIChat/GenerateTemplate";
 
 interface QuillEditorProps {
   dirDetails: File | Folder | workspace;
@@ -155,6 +155,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       if (wrapper === null) return;
       wrapper.innerHTML = "";
       const editor = document.createElement("div");
+      console.log("editor", editor);
       wrapper.append(editor);
       const Quill = (await import("quill")).default;
       const QuillCursors = (await import("quill-cursors")).default;
@@ -333,9 +334,9 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
         const cursorToMove = localCursors.find(
           (c: any) => c.cursors()?.[0].id === cursorId
         );
-        console.log("cursorToMove", cursorToMove);
+        // console.log("cursorToMove", cursorToMove);
         if (cursorToMove) {
-          cursorToMove.moveCursor(cursorId, range);
+          // cursorToMove.moveCursor(cursorId, range);
         }
       }
     };
@@ -356,16 +357,17 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
 
   //Send quill changes to all clients
   useEffect(() => {
-    console.log("socket", socket);
     if (quill === null || socket === null || !fileId || !user) return;
+
+    console.log("status of socket ", socket);
 
     const selectionChangeHandler = (cursorId: string) => {
       return (range: any, oldRange: any, source: any) => {
         if (source === "user" && cursorId) {
-          console.log("cursorId", cursorId);
-          console.log("range", range);
           socket.emit("send-cursor-move", range, fileId, cursorId);
         }
+        // console.log("cursorId", cursorId);
+        // console.log("range", range);
       };
     };
     const quillHandler = (delta: any, oldDelta: any, source: any) => {
@@ -373,6 +375,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
       setSaving(true);
       const contents = quill.getContents();
+      console.log("contents", contents);
       const quillLength = quill.getLength();
       saveTimerRef.current = setTimeout(async () => {
         if (contents && quillLength !== 1 && fileId) {
@@ -403,7 +406,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
           }
         }
         setSaving(false);
-      }, 100);
+      }, 500);
       socket.emit("send-changes", delta, fileId);
     };
     quill.on("text-change", quillHandler);
@@ -433,6 +436,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
         quill.updateContents(deltas);
       }
     };
+    // console.log("this is socket handler", socketHandler);
     socket.on("receive-changes", socketHandler);
     console.log("getting changes socket onn");
     return () => {
@@ -727,6 +731,10 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
           className="max-w-[800px]"
           ref={wrapperRefCallback}
         ></div>
+      </div>
+
+      <div className="fixed right-10 bottom-10">
+        <GenerateTemplate quill={quill} />
       </div>
     </>
   );

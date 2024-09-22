@@ -1,7 +1,7 @@
 "use client";
 
 import { UploadBannerFormSchema } from "@/lib/types";
-import React from "react";
+import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Label } from "../ui/label";
@@ -15,6 +15,7 @@ import {
 } from "@/lib/supabase/queries";
 import { createClient } from "@/lib/supabase/client";
 import { useAppState } from "@/lib/provider/state-provider";
+import Image from "next/image"; // Import next/image for optimized image rendering
 
 interface BannerUploadFormProps {
   dirType: "workspace" | "file" | "folder";
@@ -24,6 +25,8 @@ interface BannerUploadFormProps {
 const BannerUploadForm: React.FC<BannerUploadFormProps> = ({ dirType, id }) => {
   const supabase = createClient();
   const { state, workspaceId, folderId, dispatch } = useAppState();
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -35,21 +38,28 @@ const BannerUploadForm: React.FC<BannerUploadFormProps> = ({ dirType, id }) => {
       banner: "",
     },
   });
+
   const onSubmitHandler: SubmitHandler<
     z.infer<typeof UploadBannerFormSchema>
   > = async (values) => {
     const file = values.banner?.[0];
     if (!file || !id) return;
+
     try {
       let filePath = null;
 
       const uploadBanner = async () => {
         const { data, error } = await supabase.storage
           .from("file-banners")
-          .upload(`banner-${id}`, file, { cacheControl: "5", upsert: true });
+          .upload(`banner-${id}`, file, {
+            cacheControl: "5",
+            upsert: true,
+          });
+
         if (error) throw new Error();
         filePath = data.path;
       };
+
       if (dirType === "file") {
         if (!workspaceId || !folderId) return;
         await uploadBanner();
@@ -76,8 +86,24 @@ const BannerUploadForm: React.FC<BannerUploadFormProps> = ({ dirType, id }) => {
         });
         await updateFolder({ banner_url: filePath }, id);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error uploading banner:", error);
+    }
   };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setPreviewImage(imageUrl);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setPreviewImage(null);
+    reset({ banner: "" });
+  };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmitHandler)}
@@ -92,7 +118,29 @@ const BannerUploadForm: React.FC<BannerUploadFormProps> = ({ dirType, id }) => {
         accept="image/*"
         disabled={isUploading}
         {...register("banner", { required: "Banner Image is required" })}
+        onChange={(e) => {
+          register("banner").onChange(e);
+          handleImageChange(e); // Call to handle image preview
+        }}
       />
+      {previewImage && (
+        <div className="relative w-full h-32 mt-2">
+          <Image
+            src={previewImage}
+            alt="Banner Preview"
+            layout="fill"
+            objectFit="cover"
+            className="rounded-md"
+          />
+          <Button
+            type="button"
+            onClick={handleRemoveImage}
+            className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1"
+          >
+            Remove
+          </Button>
+        </div>
+      )}
       <small className="text-red-600">
         {errors.banner?.message?.toString()}
       </small>

@@ -4,8 +4,6 @@ import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 import {
   Briefcase,
-  CreditCard,
-  ExternalLink,
   Lock,
   LogOut,
   Plus,
@@ -367,14 +365,6 @@ const SettingsForm = () => {
             >
               Profile Picture
             </Label>
-            <Input
-              name="profilePicture"
-              type="file"
-              accept="image/*"
-              placeholder="Profile Picture"
-              // onChange={onChangeProfilePicture}
-              disabled={uploadingProfilePic}
-            />
           </div>
         </div>
         <LogoutButton>

@@ -31,8 +31,6 @@ const Sidebar = async ({ params, className }: SidebarProps) => {
 
   if (!user) return;
 
-  // getting the subscriptions
-
   //folders
   const { data: workspaceFolderData, error: foldersError } = await getFolders(
     params.workspaceId

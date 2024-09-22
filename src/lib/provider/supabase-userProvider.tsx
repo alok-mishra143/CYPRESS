@@ -28,7 +28,6 @@ export const SupabaseUserProvider: React.FC<SupabaseUserProviderProps> = ({
   const { toast } = useToast();
 
   //Fetch the user details
-  //subscrip
   useEffect(() => {
     const getUser = async () => {
       console.log("get user");
